@@ -412,7 +412,7 @@
         <header class="header">
             <div class="logo-title">
                 <img src="logo.png" alt="Logo" class="logo-img">
-                <h1>Weasels Unique Speiseplan</h1>
+                <h1><span id="typewriter" class="typewriter">Weasels Unique Speiseplan</span></h1>
             </div>
         </header>
         
@@ -443,95 +443,92 @@
         const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const WEEKDAYS_DE = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
         
+        // Typewriter effect
+        const texts = [
+            "Weasels Unique Speiseplan",
+            "Alles, was ein Weasel zum Schrauben braucht"
+        ];
+        let currentTextIndex = 0;
+        let currentCharIndex = 0;
+        let isDeleting = false;
+        let typewriterPaused = false;
+
+        function typewriterEffect() {
+            const typewriterElement = document.getElementById('typewriter');
+            const currentText = texts[currentTextIndex];
+            
+            if (typewriterPaused) {
+                return;
+            }
+            
+            if (!isDeleting && currentCharIndex <= currentText.length) {
+                // Typing forward
+                typewriterElement.textContent = currentText.substring(0, currentCharIndex);
+                currentCharIndex++;
+                
+                if (currentCharIndex > currentText.length) {
+                    // Finished typing, pause before deleting
+                    typewriterPaused = true;
+                    setTimeout(() => {
+                        typewriterPaused = false;
+                        isDeleting = true;
+                    }, 3000); // Pause for 3 seconds
+                }
+            } else if (isDeleting && currentCharIndex >= 0) {
+                // Deleting backward
+                typewriterElement.textContent = currentText.substring(0, currentCharIndex);
+                currentCharIndex--;
+                
+                if (currentCharIndex < 0) {
+                    // Finished deleting, switch to next text
+                    isDeleting = false;
+                    currentTextIndex = (currentTextIndex + 1) % texts.length;
+                    currentCharIndex = 0;
+                    
+                    // Short pause before typing next text
+                    typewriterPaused = true;
+                    setTimeout(() => {
+                        typewriterPaused = false;
+                    }, 500);
+                }
+            }
+        }
+
+        // Start typewriter effect
+        setInterval(typewriterEffect, 100); // 100ms per character
+        
         function updateDate() {
             // Date is now only shown in the section title, not in header
         }
 
         function getMenuData() {
-            // Auto-updated by GitHub Actions on 2025-06-16
+            // This data will be automatically updated by GitHub Actions
             return {
-          "Monday": [
-                    {
-                              "name": "Schweinegeschnetzeltes mit Champignons, Spätzle & Lauchzwiebeln",
-                              "price": "9.90"
-                    },
-                    {
-                              "name": "Mediterrane Schupfnudel-Pfanne mit Tomatenragout & Rucola",
-                              "price": "8.00"
-                    },
-                    {
-                              "name": "Vegane Kokos-Limettensuppe mit Zitronengras-Schaum",
-                              "price": "4.50"
-                    },
-                    {
-                              "name": "Chili con carne mit Baguette",
-                              "price": "6.50"
-                    },
-                    {
-                              "name": "Salat mit gebackenen Garnelen",
-                              "price": "9.50"
-                    },
-                    {
-                              "name": "Tagesdessert",
-                              "price": "3.70"
-                    }
-          ],
-          "Tuesday": [
-                    {
-                              "name": "Butter-Chicken mit Paprika, Zucchini und Reis",
-                              "price": "9.90"
-                    },
-                    {
-                              "name": "Hausgemachte Senfeier mit Blattspinat & Kartoffelstampf4,50",
-                              "price": "8.00"
-                    },
-                    {
-                              "name": "Eingabe folgt",
-                              "price": "5.00"
-                    },
-                    {
-                              "name": "Chili con carne mit Baguette",
-                              "price": "6.50"
-                    }
-          ],
-          "Wednesday": [
-                    {
-                              "name": "Crispychicken Burger mit Kartoffeldippers",
-                              "price": "10.50"
-                    },
-                    {
-                              "name": "Veggieburger mit Kartoffeldippers4,50",
-                              "price": "9.00"
-                    },
-                    {
-                              "name": "Eingabe folgt",
-                              "price": "5.00"
-                    },
-                    {
-                              "name": "Chili con carne mit Baguette",
-                              "price": "6.50"
-                    }
-          ],
-          "Thursday": [
-                    {
-                              "name": "Hausgemachtes Labskaus mit Spiegelei, Rollmops, Rote Bete & Gewürzgurke",
-                              "price": "9.90"
-                    },
-                    {
-                              "name": "Rote Bete Sticks mit Cous Coussalat & Dip4,50",
-                              "price": "8.00"
-                    },
-                    {
-                              "name": "Eingabe folgt",
-                              "price": "5.00"
-                    },
-                    {
-                              "name": "Chili con carne mit Baguette",
-                              "price": "6.50"
-                    }
-          ],
-          "Friday": []
-};
+                'Monday': [
+                    { name: 'Schweinegeschnetzeltes mit Champignons, Spätzle & Lauchzwiebeln', price: '9.90' },
+                    { name: 'Mediterrane Schupfnudel-Pfanne mit Tomatenragout & Rucola', price: '8.00' },
+                    { name: 'Vegane Kokos-Limettensuppe mit Zitronengras-Schaum', price: '4.50' },
+                    { name: 'Chili con carne mit Baguette', price: '6.50' },
+                    { name: 'Salat mit gebackenen Garnelen', price: '9.50' },
+                    { name: 'Tagesdessert', price: '3.70' }
+                ],
+                'Tuesday': [
+                    { name: 'Butter-Chicken mit Paprika, Zucchini und Reis', price: '9.90' },
+                    { name: 'Hausgemachte Senfeier mit Blattspinat & Kartoffelstampf', price: '8.00' },
+                    { name: 'Chili con carne mit Baguette', price: '6.50' }
+                ],
+                'Wednesday': [
+                    { name: 'Crispychicken Burger mit Kartoffeldippers', price: '10.50' },
+                    { name: 'Veggieburger mit Kartoffeldippers', price: '9.00' },
+                    { name: 'Chili con carne mit Baguette', price: '6.50' }
+                ],
+                'Thursday': [
+                    { name: 'Hausgemachtes Labskaus mit Spiegelei, Rollmops, Rote Bete & Gewürzgurke', price: '9.90' },
+                    { name: 'Rote Bete Sticks mit Cous Coussalat & Dip', price: '8.00' },
+                    { name: 'Chili con carne mit Baguette', price: '6.50' }
+                ],
+                'Friday': []
+            };
         }
 
         function renderMenuItem(item) {
