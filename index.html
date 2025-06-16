@@ -470,7 +470,7 @@
         // Typewriter effect
         const texts = [
             "Weasels Unique Speiseplan",
-            "Alles, was ein Weasel zum Schrauben braucht"
+            "Alles, was ein Weasel\nzum Schrauben braucht"
         ];
         let currentTextIndex = 0;
         let currentCharIndex = 0;
@@ -487,7 +487,10 @@
             
             if (!isDeleting && currentCharIndex <= currentText.length) {
                 // Typing forward
-                typewriterElement.textContent = currentText.substring(0, currentCharIndex);
+                let displayText = currentText.substring(0, currentCharIndex);
+                // Replace \n with <br> for line breaks
+                displayText = displayText.replace(/\n/g, '<br>');
+                typewriterElement.innerHTML = displayText;
                 currentCharIndex++;
                 
                 if (currentCharIndex > currentText.length) {
@@ -500,7 +503,10 @@
                 }
             } else if (isDeleting && currentCharIndex >= 0) {
                 // Deleting backward
-                typewriterElement.textContent = currentText.substring(0, currentCharIndex);
+                let displayText = currentText.substring(0, currentCharIndex);
+                // Replace \n with <br> for line breaks
+                displayText = displayText.replace(/\n/g, '<br>');
+                typewriterElement.innerHTML = displayText;
                 currentCharIndex--;
                 
                 if (currentCharIndex < 0) {
