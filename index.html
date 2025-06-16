@@ -469,8 +469,8 @@
         
         // Typewriter effect
         const texts = [
-            "Weasels Unique Speiseplan",
-            "Alles, was ein Weasel\nzum Schrauben braucht"
+            "Weasels: From orbit to Café Unique",
+            "Integration complete -\nlunch ready"
         ];
         let currentTextIndex = 0;
         let currentCharIndex = 0;
@@ -502,7 +502,7 @@
                     }, 3000); // Pause for 3 seconds
                 }
             } else if (isDeleting && currentCharIndex >= 0) {
-                // Deleting backward
+                // Deleting backward (double speed)
                 let displayText = currentText.substring(0, currentCharIndex);
                 // Replace \n with <br> for line breaks
                 displayText = displayText.replace(/\n/g, '<br>');
@@ -524,8 +524,17 @@
             }
         }
 
-        // Start typewriter effect
-        setInterval(typewriterEffect, 100); // 100ms per character
+        // Start typewriter effect - faster deleting
+        setInterval(() => {
+            if (isDeleting) {
+                // Double speed for deleting (50ms)
+                typewriterEffect();
+                setTimeout(typewriterEffect, 50);
+            } else {
+                // Normal speed for typing (100ms)
+                typewriterEffect();
+            }
+        }, 100);
         
         function updateDate() {
             // Date is now only shown in the section title, not in header
