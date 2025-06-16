@@ -1,0 +1,39 @@
+name: Update Café Unique Menu
+
+on:
+  schedule:
+    # Läuft jeden Tag um 6:00 UTC (8:00 MESZ)
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Manueller Start möglich
+
+jobs:
+  update-menu:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: |
+        npm init -y
+        npm install axios cheerio
+        
+    - name: Scrape menu data
+      run: node scripts/scrape-menu.js
+      
+    - name: Update HTML file
+      run: node scripts/update-html.js
+      
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add index.html
+        git diff --staged --quiet || git commit -m "🍽️ Update menu data $(date '+%Y-%m-%d')"
+        git push
