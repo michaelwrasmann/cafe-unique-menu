@@ -1,4 +1,6 @@
-name: Update Café Unique Menu
+# .github/workflows/update-menu.yml
+
+name: Update Weasels Unique Speiseplan
 
 on:
   schedule:
@@ -35,5 +37,5 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add index.html
-        git diff --staged --quiet || git commit -m "🍽️ Update menu data $(date '+%Y-%m-%d')"
+        git diff --staged --quiet || git commit -m "🍽️ Update Weasels menu $(date '+%Y-%m-%d')"
         git push
