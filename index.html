@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Café Unique</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            border-bottom: 1px solid #333;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .header .subtitle {
+            font-size: 1.1rem;
+            color: #888;
+            font-weight: 400;
+        }
+
+        .content {
+            padding: 40px 20px;
+        }
+
+        .today-section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            letter-spacing: -0.01em;
+        }
+
+        .menu-item {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .menu-item:hover {
+            border-color: #333;
+            transform: translateY(-1px);
+        }
+
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .menu-item-name {
+            font-size: 1.05rem;
+            font-weight: 500;
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        .menu-item-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            background: #333;
+            padding: 4px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .closed-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 16px;
+        }
+
+        .closed-state h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .closed-state p {
+            color: #888;
+            font-size: 1rem;
+        }
+
+        .week-section {
+            margin-top: 60px;
+            padding-top: 60px;
+            border-top: 1px solid #333;
+        }
+
+        .week-day {
+            margin-bottom: 40px;
+        }
+
+        .week-day-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #222;
+        }
+
+        .week-day.today .week-day-title {
+            color: #fff;
+        }
+
+        .week-day:not(.today) .week-day-title {
+            color: #666;
+        }
+
+        .week-day:not(.today) .menu-item {
+            background: #0a0a0a;
+            border-color: #1a1a1a;
+            opacity: 0.7;
+        }
+
+        .week-day:not(.today) .menu-item-name {
+            color: #999;
+        }
+
+        .week-day:not(.today) .menu-item-price {
+            background: #222;
+            color: #ccc;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #333;
+            border-top: 2px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 16px;
+        }
+
+        .refresh-btn {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin: 40px auto 0;
+            display: block;
+            transition: all 0.2s ease;
+        }
+
+        .refresh-btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-1px);
+        }
+
+        .refresh-btn:active {
+            transform: translateY(0);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 60px 20px 40px;
+            border-top: 1px solid #333;
+            margin-top: 60px;
+        }
+
+        .footer-info {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .footer-link {
+            color: #888;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-link:hover {
+            color: #fff;
+        }
+
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .menu-item-header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+            
+            .menu-item-price {
+                align-self: flex-start;
+            }
+        }
+
+        /* Subtle animations */
+        .menu-item {
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .menu-item:nth-child(1) { animation-delay: 0.1s; }
+        .menu-item:nth-child(2) { animation-delay: 0.2s; }
+        .menu-item:nth-child(3) { animation-delay: 0.3s; }
+        .menu-item:nth-child(4) { animation-delay: 0.4s; }
+        .menu-item:nth-child(5) { animation-delay: 0.5s; }
+        .menu-item:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Café Unique</h1>
+            <div class="subtitle" id="currentDate"></div>
+        </header>
+        
+        <main class="content">
+            <div id="menuContent">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading menu...</p>
+                </div>
+            </div>
+            
+            <button class="refresh-btn" onclick="loadMenu()" id="refreshBtn" style="display: none;">
+                Refresh
+            </button>
+        </main>
+        
+        <footer class="footer">
+            <div class="footer-info">
+                Monday – Friday, 9:00 – 16:00<br>
+                SFG Cafeteria, Enrique-Schmidt-Str. 7
+            </div>
+            <a href="https://www.uni-bremen.de/universitaet/campus/essen/speiseplaene/cafeteria/392" 
+               target="_blank" class="footer-link">Official Menu</a>
+        </footer>
+    </div>
+
+    <script>
+        const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const WEEKDAYS_DE = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+        
+        function updateDate() {
+            const today = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            document.getElementById('currentDate').textContent = 
+                today.toLocaleDateString('en-US', options);
+        }
+
+        function getMenuData() {
+            // This data will be automatically updated by GitHub Actions
+            return {
+                'Monday': [
+                    { name: 'Schweinegeschnetzeltes mit Champignons, Spätzle & Lauchzwiebeln', price: '9.90' },
+                    { name: 'Mediterrane Schupfnudel-Pfanne mit Tomatenragout & Rucola', price: '8.00' },
+                    { name: 'Vegane Kokos-Limettensuppe mit Zitronengras-Schaum', price: '4.50' },
+                    { name: 'Chili con carne mit Baguette', price: '6.50' },
+                    { name: 'Salat mit gebackenen Garnelen', price: '9.50' },
+                    { name: 'Tagesdessert', price: '3.70' }
+                ],
+                'Tuesday': [
+                    { name: 'Butter-Chicken mit Paprika, Zucchini und Reis', price: '9.90' },
+                    { name: 'Hausgemachte Senfeier mit Blattspinat & Kartoffelstampf', price: '8.00' },
+                    { name: 'Chili con carne mit Baguette', price: '6.50' }
+                ],
+                'Wednesday': [
+                    { name: 'Crispychicken Burger mit Kartoffeldippers', price: '10.50' },
+                    { name: 'Veggieburger mit Kartoffeldippers', price: '9.00' },
+                    { name: 'Chili con carne mit Baguette', price: '6.50' }
+                ],
+                'Thursday': [
+                    { name: 'Hausgemachtes Labskaus mit Spiegelei, Rollmops, Rote Bete & Gewürzgurke', price: '9.90' },
+                    { name: 'Rote Bete Sticks mit Cous Coussalat & Dip', price: '8.00' },
+                    { name: 'Chili con carne mit Baguette', price: '6.50' }
+                ],
+                'Friday': []
+            };
+        }
+
+        function renderMenuItem(item) {
+            return `
+                <div class="menu-item">
+                    <div class="menu-item-header">
+                        <div class="menu-item-name">${item.name}</div>
+                        <div class="menu-item-price">€${item.price}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderTodayMenu(weekMenu) {
+            const today = new Date();
+            const todayName = WEEKDAYS[today.getDay()];
+            const todayMenu = weekMenu[todayName] || [];
+            
+            if (todayMenu.length === 0) {
+                return `
+                    <div class="today-section">
+                        <h2 class="section-title">Today</h2>
+                        <div class="closed-state">
+                            <h3>Closed</h3>
+                            <p>No menu available for today</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            let html = `
+                <div class="today-section">
+                    <h2 class="section-title">Today</h2>
+            `;
+            
+            todayMenu.forEach(item => {
+                html += renderMenuItem(item);
+            });
+            
+            html += '</div>';
+            return html;
+        }
+
+        function renderWeekMenu(weekMenu) {
+            const today = new Date();
+            const todayName = WEEKDAYS[today.getDay()];
+            
+            let html = `
+                <div class="week-section">
+                    <h2 class="section-title">This Week</h2>
+            `;
+            
+            Object.keys(weekMenu).forEach(day => {
+                const isToday = day === todayName;
+                const dayMenu = weekMenu[day];
+                
+                html += `
+                    <div class="week-day ${isToday ? 'today' : ''}">
+                        <h3 class="week-day-title">${day}${isToday ? ' (Today)' : ''}</h3>
+                `;
+                
+                if (dayMenu.length === 0) {
+                    html += `
+                        <div class="closed-state">
+                            <p>Closed</p>
+                        </div>
+                    `;
+                } else {
+                    dayMenu.forEach(item => {
+                        html += renderMenuItem(item);
+                    });
+                }
+                
+                html += '</div>';
+            });
+            
+            html += '</div>';
+            return html;
+        }
+
+        async function loadMenu() {
+            const menuContent = document.getElementById('menuContent');
+            const refreshBtn = document.getElementById('refreshBtn');
+            
+            menuContent.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading menu...</p>
+                </div>
+            `;
+            refreshBtn.style.display = 'none';
+
+            try {
+                await new Promise(resolve => setTimeout(resolve, 800));
+                
+                const weekMenu = getMenuData();
+                
+                let html = renderTodayMenu(weekMenu);
+                html += renderWeekMenu(weekMenu);
+                
+                menuContent.innerHTML = html;
+                
+            } catch (error) {
+                menuContent.innerHTML = `
+                    <div class="error-state">
+                        <h3>Unable to load menu</h3>
+                        <p>Please check the official website</p>
+                    </div>
+                `;
+            }
+            
+            refreshBtn.style.display = 'block';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDate();
+            loadMenu();
+        });
+    </script>
+</body>
+</html>
