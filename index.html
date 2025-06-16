@@ -412,7 +412,6 @@
                 </div>
                 <h1>Weasels Unique Speiseplan</h1>
             </div>
-            <div class="subtitle" id="currentDate"></div>
         </header>
         
         <main class="content">
@@ -443,15 +442,7 @@
         const WEEKDAYS_DE = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
         
         function updateDate() {
-            const today = new Date();
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            };
-            document.getElementById('currentDate').textContent = 
-                today.toLocaleDateString('de-DE', options);
+            // Date is now only shown in the section title, not in header
         }
 
         function getMenuData() {
