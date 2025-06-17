@@ -5,7 +5,8 @@ name: Update Weasels Unique Speiseplan
 on:
   schedule:
     # Läuft jeden Tag um 6:00 UTC (8:00 MESZ)
-    - cron: '0 6 * * *'
+  - cron: '30 6 * * 1-5'  # 7:30 Uhr (Morgens)
+  - cron: '0 11 * * 1-5'  # 11:00 Uhr (Mittags)
   workflow_dispatch: # Manueller Start möglich
 
 jobs:
