@@ -1,0 +1,35 @@
+{
+  "name": "cafe-unique-menu",
+  "version": "1.0.0",
+  "description": "Automated menu scraper for Cafe Unique at University of Bremen",
+  "main": "index.js",
+  "scripts": {
+    "scrape": "node scripts/scrape-menu.js",
+    "update": "node scripts/update-html.js",
+    "start": "npm run scrape && npm run update"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michaelwrasmann/cafe-unique-menu.git"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "axios": "^1.7.3",
+    "cheerio": "^1.0.0-rc.12"
+  },
+  "keywords": [
+    "menu",
+    "scraper",
+    "university",
+    "bremen",
+    "cafe"
+  ],
+  "author": "Michael Wrasmann",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/michaelwrasmann/cafe-unique-menu/issues"
+  },
+  "homepage": "https://github.com/michaelwrasmann/cafe-unique-menu#readme"
+}

@@ -81,10 +81,12 @@ function parseDishesByPrices(dishesText) {
         const price = match[1].replace(',', '.');
         let dishName = match[2].trim();
         
-        // Clean up dish name
+        // Clean up dish name - remove trailing numbers that might be leftover prices
         dishName = dishName
             .replace(/^\s*[\/\-\|]\s*/, '') // Remove leading separators
             .replace(/\s*[\/\-\|]\s*$/, '') // Remove trailing separators
+            .replace(/\d+[,\.]\d+$/, '') // Remove trailing price patterns like "4,50" or "4.50"
+            .replace(/\d+$/, '') // Remove trailing numbers
             .replace(/\s+/g, ' ')
             .trim();
         
@@ -107,7 +109,14 @@ function parseDishesByPrices(dishesText) {
             
             if (priceMatch) {
                 const price = priceMatch[1].replace(',', '.');
-                const dishName = part.replace(priceMatch[0], '').trim();
+                let dishName = part.replace(priceMatch[0], '').trim();
+                
+                // Additional cleanup for dish names
+                dishName = dishName
+                    .replace(/\d+[,\.]\d+$/, '') // Remove trailing price patterns
+                    .replace(/\d+$/, '') // Remove trailing numbers
+                    .replace(/\s+/g, ' ')
+                    .trim();
                 
                 if (dishName && dishName.length > 3) {
                     dishes.push({
