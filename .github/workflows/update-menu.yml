@@ -8,6 +8,8 @@ on:
   - cron: '30 6 * * 1-5'  # 7:30 Uhr (Morgens)
   - cron: '0 10 * * 1-5'  # 12:00 Uhr (Mittags)
   - cron: '0 9 * * 1-5'  # 11:00 Uhr (Mittags)
+  - cron: '15 9 * * 1-5'  # 11:15 Uhr (Vormittags)
+  
   workflow_dispatch: # Manueller Start möglich
 
 jobs:
